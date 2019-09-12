@@ -2,6 +2,7 @@
   command: "keybase -v"
   changed_when: false
   check_mode: false
+  ignore_errors: true
   register: keybase_result
 
 - name: Download Keybase .deb
@@ -13,13 +14,13 @@
 - name: Start .deb install
   become: true
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
-  shell: 'dpkg -i {{ package_dest }}/keybase.deb'
+  command: 'dpkg -i {{ package_dest }}/keybase.deb'
   ignore_errors: true
 
 - name: Finish installation
   become: true
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
-  shell: 'apt install -f -y'
+  command: 'apt install -f -y'
 
 - name: Install Keybase .rpm
   become: true
