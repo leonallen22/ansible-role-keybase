@@ -1,12 +1,28 @@
 - name: Check for Keybase
   command: "keybase -v"
-  ignore_errors: true
+  changed_when: false
+  check_mode: false
   register: keybase_result
 
-- name: Install Keybase (Debian)
+- name: Download Keybase .deb
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
-  include: keybase_debian.yml
+  get_url:
+    url: "{{ keybase_package_url }}/keybase_amd64.deb"
+    dest: "{{ package_dest }}/keybase.deb"
 
-- name: Install Keybase (RedHat)
+- name: Start .deb install
+  become: true
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  shell: 'dpkg -i {{ package_dest }}/keybase.deb'
+  ignore_errors: true
+
+- name: Finish installation
+  become: true
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  shell: 'apt install -f -y'
+
+- name: Install Keybase .rpm
+  become: true
   when: ansible_os_family == "RedHat" and keybase_result.rc != 0
-  include: keybase_redhat.yml
+  package:
+    name: "{{ keybase_package_url }}/keybase_amd64.rpm"
