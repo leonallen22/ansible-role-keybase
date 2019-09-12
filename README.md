@@ -9,9 +9,11 @@ Any necessary files will be downloaded here unless otherwise specified:
 package_dest: /tmp
 
 ## Example Playbook
+```
   - hosts
     roles:
       - { role: leonallen22.keybase }
+```
 
 ## License
 MIT
