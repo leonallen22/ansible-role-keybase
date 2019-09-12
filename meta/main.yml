@@ -1,14 +1,21 @@
 galaxy_info:
   author: Leon Allen
-  license: MIT
+  description: Keybase application
+  license: "license (MIT)"
   min_ansible_version: 2.4
   platforms:
+    - name: Debian
+      versions:
+        - all
     - name: Ubuntu
       versions:
-        - 16.04
-    - name: CentOS
+        - all
+    - name: EL
       versions:
-        - 7
+        - all
+    - name: Fedora
+      versions:
+        - all
   galaxy_tags:
     - keybase
     - messaging
