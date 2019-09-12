@@ -1,0 +1,7 @@
+- name: Install Keybase (Debian)
+  when: ansible_os_family == "Debian"
+  include: keybase_debian.yml
+
+- name: Install Keybase (RedHat)
+  when: ansible_os_family == "RedHat"
+  include: keybase_redhat.yml

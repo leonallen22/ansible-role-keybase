@@ -1,0 +1,4 @@
+- name: Install Keybase .rpm
+  become: true
+  package:
+    name: "{{ keybase_package_url }}/keybase_amd64.rpm"

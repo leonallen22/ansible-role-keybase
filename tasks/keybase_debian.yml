@@ -1,0 +1,13 @@
+- name: Download Keybase .deb
+  get_url:
+    url: "{{ keybase_package_url }}/keybase_amd64.deb"
+    dest: "{{ package_dest }}/keybase.deb"
+
+- name: Start .deb install
+  become: true
+  shell: 'dpkg -i {{ package_dest }}/keybase.deb'
+  ignore_errors: true
+
+- name: Finish installation
+  become: true
+  shell: 'apt install -f -y'
