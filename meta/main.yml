@@ -19,6 +19,9 @@ galaxy_info:
     - name: Fedora
       versions:
         - all
+    - name: Windows
+      versions:
+        - all
   galaxy_tags:
     - keybase
     - messaging
