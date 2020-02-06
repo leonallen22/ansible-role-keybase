@@ -34,3 +34,11 @@
   when: ansible_os_family == "RedHat" and keybase_result.rc != 0
   package:
     name: "{{ keybase_package_url }}/keybase_amd64.rpm"
+
+- name: Install Keybase.app
+  when: ansible_os_family == "Darwin" and keybase_result.rc != 0
+  become: false
+  homebrew_cask:
+    name: keybase
+    state: present
+    update_homebrew: yes

@@ -22,6 +22,9 @@ galaxy_info:
     - name: Windows
       versions:
         - all
+    - name: Darwin
+      versions:
+        - all
   galaxy_tags:
     - keybase
     - messaging
