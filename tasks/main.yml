@@ -1,9 +1,16 @@
+- name: Install keybase
+  when: ansible_os_family == 'Windows'
+  win_chocolatey:
+    name: keybase
+    state: present
+
 - name: Check for Keybase
   command: "keybase -v"
   changed_when: false
   check_mode: false
   ignore_errors: true
   register: keybase_result
+  when: ansible_os_family != 'Windows'
 
 - name: Download Keybase .deb
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
