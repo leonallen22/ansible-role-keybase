@@ -37,6 +37,16 @@
 
 - name: Install Keybase .rpm
   become: true
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version|int == 7
+    - keybase_result.rc != 0
+  yum:
+    name: "{{ keybase_package_url }}/keybase_amd64.rpm"
+    disable_gpg_check: true
+
+- name: Install Keybase package
+  become: true
   when: ansible_os_family == "RedHat" and keybase_result.rc != 0
   package:
     name: "{{ keybase_package_url }}/keybase_amd64.rpm"
