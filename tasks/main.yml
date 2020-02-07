@@ -22,7 +22,13 @@
   become: true
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
   command: 'dpkg -i {{ package_dest }}/keybase.deb'
+  register: install_result
   ignore_errors: true
+
+- name: Finish .deb install
+  become: true
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0 and install_result.rc != 0
+  command: 'apt install -f --yes'
 
 - name: Finish installation
   become: true
