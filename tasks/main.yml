@@ -12,6 +12,20 @@
   register: keybase_result
   failed_when: keybase_result.rc not in [0, 2]
 
+- name: Updating cache and auto-installing python-apt
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  apt:
+    name: python-apt
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Installing dependencies
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  apt:
+    state: present
+    name: "{{ deb_dependencies }}"
+
 - name: Download Keybase .deb
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
   get_url:
