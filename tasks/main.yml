@@ -5,12 +5,26 @@
     state: present
 
 - name: Check for Keybase
+  when: ansible_os_family != 'Windows'
   command: "keybase -v"
   changed_when: false
   check_mode: false
-  ignore_errors: true
   register: keybase_result
-  when: ansible_os_family != 'Windows'
+  failed_when: keybase_result.rc not in [0, 2]
+
+- name: Updating cache and auto-installing python-apt
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  apt:
+    name: python-apt
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Installing dependencies
+  when: ansible_os_family == "Debian" and keybase_result.rc != 0
+  apt:
+    state: present
+    name: "{{ deb_dependencies }}"
 
 - name: Download Keybase .deb
   when: ansible_os_family == "Debian" and keybase_result.rc != 0
@@ -36,6 +50,16 @@
   command: 'apt install -f -y'
 
 - name: Install Keybase .rpm
+  become: true
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_major_version|int == 7
+    - keybase_result.rc != 0
+  yum:
+    name: "{{ keybase_package_url }}/keybase_amd64.rpm"
+    disable_gpg_check: true
+
+- name: Install Keybase package
   become: true
   when: ansible_os_family == "RedHat" and keybase_result.rc != 0
   package:

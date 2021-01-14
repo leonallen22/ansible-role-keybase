@@ -7,10 +7,14 @@ lint: |
     set -e
     yamllint .
 platforms:
+  - name: Debian-instance
+    image: debian:buster
   - name: Ubuntu-16.04-instance
     image: ubuntu:16.04
   - name: Ubuntu-18.04-instance
     image: ubuntu:18.04
+  - name: Fedora-31-instance
+    image: fedora:31
   - name: CentOS-7-instance
     image: centos:7
 provisioner:

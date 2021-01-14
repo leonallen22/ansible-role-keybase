@@ -1,2 +1,15 @@
 ---
 package_dest: "/tmp"
+
+deb_dependencies:
+  - fuse
+  - libappindicator1
+  - libasound2
+  - libgconf-2-4
+  - libgtk-3-0
+  - libnss3
+  - libxss1
+  - libxtst6
+  - lsof
+  - psmisc
+  - procps
